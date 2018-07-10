@@ -23,6 +23,17 @@ session_start();
 </head>
 <body>
 
+<style>
+    * {
+        user-drag: none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand social" href="#">
 
@@ -36,36 +47,42 @@ session_start();
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Rejestracja</a>
+                <?php
+
+                if (isset($_SESSION['zalogowany']))
+                {
+                    echo "<span class=\"nav-link\">Cześć <b>".$_SESSION['z_imie']."</b>!</span>";
+                }
+
+                else
+                {
+                    echo "<a class=\"nav-link\" href=\"../../\">Rejestracja</a>";
+                }
+                ?>
+
             </li>
             <li class="nav-item">
                 <a class="nav-link" style="color:  rgba(182, 182, 182, 0.49);" href="#">|
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#">
-                    Zaloguj
-                </a>
+                <?php
+
+                if (isset($_SESSION['zalogowany']))
+                {
+                    echo "<a class=\"nav-link\" href='../../logout.php'\">Wyloguj</a>";
+                }
+
+
+                else
+                {
+                    echo "<a class=\"nav-link dropdown-toggle\" href='#'\">Pomoc</a>";
+                }
+                ?>
             </li>
         </ul>
     </div>
 </nav>
-
-<div id="logininput">
-    <a class="navbar-brand" href="#" style="letter-spacing: 1.5px; font-family: 'Raleway', sans-serif;">
-        <span style="color: #ca7b11; font-weight: bold">Shop</span>ly <span style="font-size: 34px;"></span>
-    </a>
-
-    <div style="font-size: 17px; margin-bottom: 3px;">Panel logowania</div>
-
-    <form method="post" action="../php/zaloguj.php">
-        <div><input class="login" type="text" name="login" placeholder="Twoj login"></div>
-        <div><input class="password" type="password" name="password" placeholder="Twoje hasło"></div>
-        <div>
-            <button style=" width: 91%; margin-top: 5px;" type="submit" class="btn btn-warning">Zaloguj</button>
-        </div>
-    </form>
-</div>
 
 <header class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#"
@@ -94,13 +111,7 @@ session_start();
             <a class="nav-link" style="color:  rgba(226,226,226,0.49);" href="#">|
             </a></li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Płatności</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" style="color:  rgba(226,226,226,0.49);" href="#">|
-            </a></li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Pomoc</a>
+            <a class="nav-link" href="../../zamowienie">Zamówienie</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" style="color:  rgba(226,226,226,0.49);" href="#">|
@@ -275,7 +286,8 @@ session_start();
                     echo "<div class=\"opis\">
                         <div class=\"nazwa\" style='margin-top:6px;'>".$row['nazwa']."</div>
                         <div><b>Cena:</b> <span class=\"cenaprzedmiotu\">".$row['cena']."</span> PLN</div>
-                        <div id='kategoriaproduktu' style='display: none;'>".$row['kategoria']."</div>
+                        <div class='kategoriaproduktu' style='display: none;'>".$row['kategoria']."</div>
+                        <div class='movetobasket'><i class=\"fas fa-arrows-alt\"></i>
                     </div><div class='addtobasket'><i class=\"fas fa-cart-plus\"></i></div>";
 
                     echo "</section></div>";
@@ -311,13 +323,13 @@ session_start();
 </aside>
 
 <div id="kontener_koszyka" style="display: none;">
-    <div id="info_przeniesienie">Przenieś przedmiot tutaj</div>
+    <div id="info_przeniesienie" style="display: none;">Przenieś przedmiot tutaj</div>
 
     <ul id="koszyk">
 
     </ul>
 
-    <div id="cena"><b>Razem: </b><span>0.00</span> zł    <button type="button" style="float: right; margin-right: 70px; margin-top: -6px;" class="btn btn-dark">Zamawiam</button></div>
+    <div id="cena"><b>Razem: </b><span>0.00</span> zł    <a href="../../zamowienie"><button type="button" style="float: right; margin-right: 70px; margin-top: -6px;" class="btn btn-dark">Zamawiam</button></a></div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
